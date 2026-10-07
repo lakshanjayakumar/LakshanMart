@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for LakshanMart (Maven + Tomcat 10 JDK 17)
 
 # Stage 1: Build phase
-FROM maven:3.8.6-openjdk-17 AS build
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy Maven POM and source code
