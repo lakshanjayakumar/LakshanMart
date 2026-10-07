@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+    <display-name>LakshanMart</display-name>
+
+    <description>
+        Multi-seller e-commerce marketplace web application for Anna University R2025 Semester 3 Capstone.
+    </description>
+
+    <!-- Application Lifecycle Listener: Initializes HikariCP and Database -->
+    <listener>
+        <listener-class>com.lakshan.lakshanmart.listener.AppContextListener</listener-class>
+    </listener>
+
+    <!-- Filter 1: UTF-8 Character Encoding -->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>com.lakshan.lakshanmart.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Filter 2: MDC Logging & Request ID Tracing -->
+    <filter>
+        <filter-name>MdcLoggingFilter</filter-name>
+        <filter-class>com.lakshan.lakshanmart.filter.MdcLoggingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>MdcLoggingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Filter 3: Session Authentication & RBAC -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.lakshan.lakshanmart.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/v1/auth/me</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/v1/auth/logout</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/v1/admin/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/v1/seller/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Session Configuration: 30 minutes timeout with secure HttpOnly cookies -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure> <!-- Set to true when running over HTTPS -->
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Custom Error Pages (Section 9/12: Never expose raw stack traces) -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+
+    <!-- JSTL Tag Library Mappings for Tomcat 10 / Jakarta EE -->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>jakarta.tags.core</taglib-uri>
+            <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>jakarta.tags.fmt</taglib-uri>
+            <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>jakarta.tags.functions</taglib-uri>
+            <taglib-location>/WEB-INF/tld/fn.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+</web-app>
